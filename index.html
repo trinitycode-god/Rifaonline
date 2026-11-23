@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#111111">
+  <title>Rifa Online — escolha sua rifa e garanta seu número</title>
+  <meta name="description" content="Escolha sua rifa, garanta seu número e concorra.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,400;0,600;0,800;1,800;1,900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="hero">
+  <svg class="hero-ticket" viewBox="0 0 120 90" aria-hidden="true">
+    <g transform="rotate(-12 60 45)">
+      <path d="M14 20h92v14a8 8 0 0 0 0 16v14H14V50a8 8 0 0 0 0-16z" fill="#FFD400" stroke="#111" stroke-width="3" stroke-linejoin="round"/>
+      <path d="M60 28l5.2 10.6 11.7 1.7-8.5 8.2 2 11.6L60 54.6 49.6 60l2-11.6-8.5-8.2 11.7-1.7z" fill="#111"/>
+    </g>
+  </svg>
+  <div class="hero-text">
+    <h1>RIFA<br>ONLINE</h1>
+  </div>
+  <p class="hero-tag">Escolha sua rifa, garanta seu número e concorra!</p>
+</header>
+
+<main>
+  <!-- Página inicial -->
+  <section id="view-home" aria-live="polite">
+    <div id="home-status" class="status" hidden></div>
+    <div id="cards" class="cards"></div>
+  </section>
+
+  <!-- Página da rifa -->
+  <section id="view-rifa" hidden>
+    <button type="button" class="btn-back" id="btn-voltar">
+      <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Voltar para as rifas
+    </button>
+
+    <div id="rifa-status" class="status" hidden></div>
+
+    <div class="rifa-layout" id="rifa-layout" hidden>
+      <div class="panel panel-dark">
+        <div class="rifa-head">
+          <div class="rifa-photo"><img id="r-foto" alt="" width="200" height="200"></div>
+          <div class="rifa-info">
+            <h2 id="r-nome"></h2>
+            <p id="r-desc" class="rifa-desc"></p>
+          </div>
+        </div>
+        <ul class="stats">
+          <li><span class="stat-val" id="r-valor"></span><span class="stat-lbl">por número</span></li>
+          <li><span class="stat-val" id="r-total"></span><span class="stat-lbl">números</span></li>
+          <li><span class="stat-val" id="r-disp"></span><span class="stat-lbl">disponíveis</span></li>
+        </ul>
+
+        <div class="grid" id="grid" role="group" aria-label="Números da rifa"></div>
+
+        <ul class="legend">
+          <li><i class="dot dot-sel"></i>Seu número</li>
+          <li><i class="dot dot-occ"></i>Já foi escolhido</li>
+          <li><i class="dot dot-free"></i>Disponível</li>
+        </ul>
+      </div>
+
+      <div class="panel panel-form">
+        <h3 class="form-title">
+          <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><circle cx="12" cy="8" r="4" fill="currentColor"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7z" fill="currentColor"/></svg>
+          Informe seus dados
+        </h3>
+
+        <p id="form-vazio" class="form-vazio">Toque em um número disponível para continuar.</p>
+
+        <form id="form" novalidate hidden>
+          <label class="field">
+            <span>Nome completo *</span>
+            <input type="text" id="f-nome" name="nome" autocomplete="name" maxlength="80" placeholder="Nome e sobrenome" required>
+            <small class="err" id="e-nome"></small>
+          </label>
+          <label class="field">
+            <span>Telefone / WhatsApp *</span>
+            <input type="tel" id="f-tel" name="telefone" autocomplete="tel-national" inputmode="numeric" maxlength="15" placeholder="(11) 91234-5678" required>
+            <small class="err" id="e-tel"></small>
+          </label>
+          <label class="field">
+            <span>E-mail (opcional)</span>
+            <input type="email" id="f-email" name="email" autocomplete="email" maxlength="120" placeholder="voce@exemplo.com">
+            <small class="err" id="e-email"></small>
+          </label>
+          <!-- Campo isca contra robôs: deve ficar vazio -->
+          <input type="text" id="f-site" name="website" tabindex="-1" autocomplete="off" class="hp" aria-hidden="true">
+
+          <div class="resumo">
+            <strong>Resumo da sua participação</strong>
+            <dl>
+              <dt>Rifa</dt><dd id="s-rifa"></dd>
+              <dt>Número</dt><dd id="s-num"></dd>
+              <dt>Valor</dt><dd id="s-valor"></dd>
+              <dt>Participante</dt><dd id="s-nome">—</dd>
+            </dl>
+          </div>
+
+          <p id="form-erro" class="form-erro" role="alert" hidden></p>
+
+          <button type="submit" class="btn-main" id="btn-confirmar">
+            <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span>Confirmar participação</span>
+          </button>
+          <button type="button" class="btn-link" id="btn-limpar">Escolher outro número</button>
+          <p class="privacy">Seus dados são usados apenas para esta rifa e não aparecem para outros participantes.</p>
+        </form>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="trust">
+  <ul>
+    <li><svg viewBox="0 0 24 24" width="28" height="28" aria-hidden="true"><path d="M12 2l8 3v6c0 5-3.4 9.3-8 11-4.6-1.7-8-6-8-11V5z" fill="#FFD400"/><path d="M8 12l3 3 5-6" fill="none" stroke="#111" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Confirmação feita no servidor</li>
+    <li><svg viewBox="0 0 24 24" width="28" height="28" aria-hidden="true"><path d="M13 2L4 14h6l-1 8 9-12h-6z" fill="#FFD400"/></svg>Salvo automaticamente no Google Planilhas</li>
+    <li><svg viewBox="0 0 24 24" width="28" height="28" aria-hidden="true"><path d="M7 3h10v4a5 5 0 0 1-10 0zM5 4H2v2a4 4 0 0 0 4 4M19 4h3v2a4 4 0 0 1-4 4M12 12v5M8 21h8M9 17h6" fill="none" stroke="#FFD400" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Número bloqueado para outros</li>
+  </ul>
+  <p class="boa-sorte">Boa Sorte!</p>
+</footer>
+
+<!-- Confirmação -->
+<div class="modal" id="modal" hidden role="dialog" aria-modal="true" aria-labelledby="m-titulo">
+  <div class="modal-box">
+    <div class="m-check"><svg viewBox="0 0 24 24" width="40" height="40" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <h2 id="m-titulo">Número reservado!</h2>
+    <dl class="m-dados" id="m-dados"></dl>
+    <p class="m-aviso" id="m-aviso"></p>
+    <a class="btn-main btn-wa" id="m-wa" target="_blank" rel="noopener" hidden>Enviar comprovante pelo WhatsApp</a>
+    <button type="button" class="btn-main btn-sec" id="m-fechar">Voltar para as rifas</button>
+  </div>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+<script src="script.js"></script>
+</body>
+</html>
